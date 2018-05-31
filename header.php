@@ -18,7 +18,8 @@
 
 	<body <?php body_class(); ?>>
 		<div id="content" class="content">
-			<header id="main-header" class="main-header">
-
+			<header id="main_header" class="main-header">
+				{{ header }}
 			</header>
+			{{ content }}
 		
