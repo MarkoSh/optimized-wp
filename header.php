@@ -21,5 +21,3 @@
 			<header id="main_header" class="main-header">
 				{{ header }}
 			</header>
-			{{ content }}
-		
