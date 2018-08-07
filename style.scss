@@ -55,15 +55,3 @@ input, textarea {
 .grid {
 	display: grid;
 }
-
-#content {
-	min-height: calc( 100vh - 5em );
-}
-#main_header {
-	height: 3em;
-	background-color: $accent;
-}
-#main_footer {
-	height: 5em;
-	background-color: $accent;
-}

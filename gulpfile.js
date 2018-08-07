@@ -8,31 +8,41 @@ var gulp          = require( "gulp" ),
 	autoprefixer  = require( "gulp-autoprefixer" ),
 	notify        = require( "gulp-notify" ),
 	gcmq          = require( "gulp-group-css-media-queries" ),
-	htmlmin		  = require( "gulp-htmlmin" )
+	htmlmin		  = require( "gulp-htmlmin" );
 
-gulp.task( "scss", function() {
+gulp.task( "scss", () => {
 	return gulp.src( "style.scss" )
 	.pipe( scss( { outputStyle: "expand" } ).on( "error", notify.onError() ) )
 	.pipe( rename( { suffix: ".min", prefix : "" }))
 	.pipe( autoprefixer( [ "last 15 versions" ] ) )
 	.pipe( cleancss( { level: { 1: { specialComments: 0 } } } ) ) // Opt., comment out when debugging
-	.pipe( gulp.dest( "." ) )
+	.pipe( gulp.dest( "." ) );
 } )
 
-gulp.task( "js", function() {
+gulp.task( "js", () => {
 	return gulp.src( [
 		"node_modules/axios/dist/axios.min.js",
-		"node_modules/vue/dist/vue.min.js",
+
+		"node_modules/inputmask/dist/min/inputmask/dependencyLibs/inputmask.dependencyLib.min.js",
+		"node_modules/inputmask/dist/min/inputmask/inputmask.min.js",
+		"node_modules/inputmask/dist/min/inputmask/inputmask.extensions.min.js",
+		"node_modules/inputmask/dist/min/inputmask/inputmask.phone.extensions.min.js",
+
+		"node_modules/photoswipe/dist/photoswipe.min.js",
+		"node_modules/photoswipe/dist/photoswipe-ui-default.min.js",
+
+		"node_modules/swiper/dist/js/swiper.min.js",
+
 		"js/scripts.js", // Always at the end
 		] )
 	.pipe( concat( "scripts.min.js" ) )
 	.pipe( uglify().on( "error", notify.onError() ) ) // Mifify js (opt.) - mifify hahaha
-	.pipe( gulp.dest( "." ) )
+	.pipe( gulp.dest( "." ) );
 } )
 
-gulp.task( "watch", [ "scss", "js" ], function() {
-	gulp.watch( "**/*.scss", [ "scss"] )
-	gulp.watch( "js/scripts.js", [ "js" ] )
+gulp.task( "watch", [ "scss", "js" ], () => {
+	gulp.watch( "**/*.scss", [ "scss"] );
+	gulp.watch( "js/scripts.js", [ "js" ] );
 });
 
 gulp.task( "default", [ "watch" ] );
