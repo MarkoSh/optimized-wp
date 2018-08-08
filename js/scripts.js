@@ -11,10 +11,10 @@ function rand( min, max ) {
 // возвращает cookie если есть или undefined
 function getCookie( name ) {
 
-	var matches = document.cookie.match(new RegExp(
+	var matches = document.cookie.match( new RegExp(
 	  "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-	));
-	return matches ? decodeURIComponent(matches[1]) : undefined;
+	) );
+	return matches ? decodeURIComponent( matches[ 1 ] ) : undefined;
 }
 
 // уcтанавливает cookie
