@@ -43,6 +43,6 @@ gulp.task( "js", () => {
 gulp.task( "watch", [ "scss", "js" ], () => {
 	gulp.watch( "**/*.scss", [ "scss"] );
 	gulp.watch( "js/scripts.js", [ "js" ] );
-});
+} );
 
 gulp.task( "default", [ "watch" ] );
