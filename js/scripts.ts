@@ -11,7 +11,7 @@ class Tools {
 	}
 	getCookie( name: string ): string {
 
-		var matches = document.cookie.match( new RegExp(
+		let matches = document.cookie.match( new RegExp(
 		  "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
 		) );
 		return matches ? decodeURIComponent( matches[ 1 ] ) : undefined;
@@ -20,11 +20,11 @@ class Tools {
 
 		props = props || {};
 	
-		var exp = props.expires;
+		let exp = props.expires;
 	
 		if ( typeof exp == "number" && exp ) {
 	
-			var d = new Date();
+			let d = new Date();
 	
 			d.setTime( d.getTime() + exp * 1000 );
 	
@@ -36,13 +36,13 @@ class Tools {
 	
 		value = encodeURIComponent( value );
 	
-		var updatedCookie = name + "=" + value;
+		let updatedCookie = name + "=" + value;
 	
-		for( var propName in props ) {
+		for( let propName in props ) {
 	
 			updatedCookie += "; " + propName;
 	
-			var propValue = props[ propName ];
+			let propValue = props[ propName ];
 	
 			if ( propValue !== true ) { updatedCookie += "=" + propValue; }
 		}
@@ -57,7 +57,7 @@ class Tools {
 	}
 }
 
-var tools = new Tools(); // Глобальный объект пусть будет, функции должны быть доступны везде
+let tools = new Tools(); // Глобальный объект пусть будет, функции должны быть доступны везде
 
 ( function () {
 	
