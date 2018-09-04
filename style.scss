@@ -7,18 +7,19 @@
 ::placeholder {
 	color: #666;
 }
-	
 
 ::selection {
 	background-color: $accent;
 	color: #fff;
 }
 
+* {
+	box-sizing: border-box;
+}
 
 html, body {
 	min-height: 100%;
 }
-
 
 body {
 	font-size: 16px;
@@ -47,11 +48,17 @@ input, textarea {
 	height: auto;
 }
 
-
 .text-center {
 	text-align: center
 }
 
 .grid {
 	display: grid;
+}
+
+.container {
+	max-width: 1700px;
+	width: 100%;
+	padding: $gutter;
+	margin: 0 auto;
 }
