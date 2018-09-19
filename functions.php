@@ -17,3 +17,5 @@ function add_ajax_url() {
 	</script>
 	<?php
 }
+
+add_filter( 'show_admin_bar', '__return_false' ); // Убираем панелькеу из фронта для всего на свете, ненавижу ее во фронте
