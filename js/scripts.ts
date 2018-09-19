@@ -118,6 +118,7 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 				( <HTMLButtonElement> button ).disabled = true;
 				( <HTMLButtonElement> button ).innerText = 'В процессе';
 				let data = new FormData( ( <HTMLFormElement> ajaxform ) );
+				data.set( 'captcha', String( tools.rand( 120000, 500000 ) ) ); // Не забудьте сделать проверку поля captcha в беке, минимальная капча, убережет ваши нервы на первое время.
 				axios( {
 					url: ajax_url,
 					data: data,
