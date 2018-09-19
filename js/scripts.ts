@@ -162,9 +162,9 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	/*
 	 * Простенькое решение показа модала
 	 */
-	let modal_initiators = dom.querySelectorAll( '.modal-init' );
-	if ( modal_initiators ) {
-		modal_initiators.forEach( modal_initiator => {
+	let modal_inits = dom.querySelectorAll( '.modal-init' );
+	if ( modal_inits ) {
+		modal_inits.forEach( modal_initiator => {
 			let hash = ( <HTMLElement> modal_initiator ).getAttribute( 'href' ) || ( <HTMLElement> modal_initiator ).getAttribute( 'data-modal' ) ;
 			( <HTMLElement> modal_initiator ).onclick = e => {
 				e.preventDefault();
