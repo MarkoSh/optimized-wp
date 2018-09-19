@@ -8,7 +8,7 @@ var gulp          = require( "gulp" ),
 	autoprefixer  = require( "gulp-autoprefixer" ),
 	notify        = require( "gulp-notify" ),
 	gcmq          = require( "gulp-group-css-media-queries" ), // На любителя, мне не сильно пригодилось, но штука красит код
-	htmlmin		  = require( "gulp-htmlmin" );
+	htmlmin		  = require( "gulp-htmlmin" ); // Рудимент, пусть будет на память.
 
 gulp.task( "scss", () => {
 	return gulp.src( "style.scss" )
