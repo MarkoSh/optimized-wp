@@ -139,5 +139,24 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 			};
 		} );
 	}
+
+	/*
+	 * Хитрое решение клика в область вне нужного элемента,
+	 * например у самопального сайдбара выдвигающегося, либо модала,
+	 * по типу magnific-popup
+	 */
+	let over = document.getElementById( 'over' );
+	if ( over ) {
+		over.onclick = e => {
+			document.body.classList.remove( 'is-modal' );
+			document.body.classList.remove( 'is-side' );
+			let actives = document.querySelectorAll( '.active' );
+			if ( actives ) {
+				actives.forEach( active => {
+					active.classList.remove( 'active' );
+				} );
+			}
+		};
+	}
 	
 } )();
