@@ -61,13 +61,13 @@ declare let ajax_url; // Так надо!
 declare function axios( options ): Promise<any>; // Тоже так надо )
 let tools = new Tools(); // Глобальный объект пусть будет, функции должны быть доступны везде
 
-( () => {
+( dom => {
 
 	/*
 	 * Перехватываем все хеш-ссылки и убираем с них клик, ниже уже назначаем новые хендлеры.
 	 * Сделано исключительно для удобства и для красоты.
 	 */
-	let hashlinks = document.querySelectorAll( 'a[href="#"]' );
+	let hashlinks = dom.querySelectorAll( 'a[href="#"]' );
 	if ( hashlinks ) {
 		hashlinks.forEach( ( hashlink, i, array ) => {
 			( <HTMLAnchorElement> hashlink ).onclick = e => {
@@ -84,7 +84,7 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	 * новорожденные лучше обработать отдельно, а еще лучше не создавать
 	 * таких ситуаций, пусть элементы уже существуют изначально
 	 */
-	let quantities = document.querySelectorAll( '.quantity' );
+	let quantities = dom.querySelectorAll( '.quantity' );
 	if ( quantities ) {
 		quantities.forEach( quantity => {
 			let add = quantity.querySelector( 'button.add' ),
@@ -110,7 +110,7 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	 * через axios, его необходимо декларировать выше, проверьте,
 	 * что установили его в ноде
 	 */
-	let ajaxforms = document.querySelectorAll( 'form.ajax' );
+	let ajaxforms = dom.querySelectorAll( 'form.ajax' );
 	if ( ajaxforms ) {
 		ajaxforms.forEach( ajaxform => {
 			let button = ajaxform.querySelector( '[type=submit]' );
@@ -145,12 +145,12 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	 * например у самопального сайдбара выдвигающегося, либо модала,
 	 * по типу magnific-popup
 	 */
-	let over = document.getElementById( 'over' );
+	let over = dom.getElementById( 'over' );
 	if ( over ) {
 		over.onclick = e => {
-			document.body.classList.remove( 'is-modal' );
-			document.body.classList.remove( 'is-side' );
-			let actives = document.querySelectorAll( '.active' );
+			dom.body.classList.remove( 'is-modal' );
+			dom.body.classList.remove( 'is-side' );
+			let actives = dom.querySelectorAll( '.active' );
 			if ( actives ) {
 				actives.forEach( active => {
 					active.classList.remove( 'active' );
@@ -162,18 +162,18 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	/*
 	 * Простенькое решение показа модала
 	 */
-	let modal_initiators = document.querySelectorAll( '.modal-init' );
+	let modal_initiators = dom.querySelectorAll( '.modal-init' );
 	if ( modal_initiators ) {
 		modal_initiators.forEach( modal_initiator => {
 			let hash = ( <HTMLElement> modal_initiator ).getAttribute( 'href' ) || ( <HTMLElement> modal_initiator ).getAttribute( 'data-modal' ) ;
 			( <HTMLElement> modal_initiator ).onclick = e => {
 				e.preventDefault();
-				let modal = document.querySelector( hash );
+				let modal = dom.querySelector( hash );
 				modal.classList.add( 'active' );
-				document.body.classList.add( 'is-modal' );
+				dom.body.classList.add( 'is-modal' );
 				return true;
 			};
 		} );
 	}
 	
-} )();
+} )( document );
