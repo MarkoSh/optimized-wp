@@ -57,8 +57,86 @@ class Tools {
 	}
 }
 
+declare let ajax_url;
+declare function axios( options ): Promise<any>;
 let tools = new Tools(); // Глобальный объект пусть будет, функции должны быть доступны везде
 
-( function () {
+( () => {
+
+	/*
+	 * Перехватываем все хеш-ссылки и убираем с них клик, ниже уже назначаем новые хендлеры.
+	 * Сделано исключительно для удобства и для красоты.
+	 */
+	let hashlinks = document.querySelectorAll( 'a[href="#"]' );
+	if ( hashlinks ) {
+		hashlinks.forEach( ( hashlink, i, array ) => {
+			( <HTMLAnchorElement> hashlink ).onclick = e => {
+				e.preventDefault();
+				return true;
+			};
+		} );
+	}
+
+	/*
+	 * Подхватываем обработку поля Количество, при условии,
+	 * что доверстали к элементу две кнопки прибавления и вычитания.
+	 * !!! Внимание!!! Подхватываются только те, что уже существуют,
+	 * новорожденные лучше обработать отдельно, а еще лучше не создавать
+	 * таких ситуаций, пусть элементы уже существуют изначально
+	 */
+	let quantities = document.querySelectorAll( '.quantity' );
+	if ( quantities ) {
+		quantities.forEach( quantity => {
+			let add = quantity.querySelector( 'button.add' ),
+				sub = quantity.querySelector( 'button.sub' ),
+				qty = quantity.querySelector( 'input.qty' ),
+				val = parseInt( ( <HTMLInputElement> qty ).value ),
+				max = parseInt( qty.getAttribute( 'max' ) ) || 999999,
+				min = parseInt( qty.getAttribute( 'min' ) ) || 0;
+			
+			( <HTMLButtonElement> add ).onclick = e => {
+				val = val + 1 <= max ? val++ : max;
+				( <HTMLInputElement> qty ).value = String( val );
+			};
+			( <HTMLButtonElement> sub ).onclick = e => {
+				val = val - 1 >= min ? val-- : min;
+				( <HTMLInputElement> qty ).value = String( val );
+			};
+		} );
+	}
+
+	/*
+	 * Подхватываем все формы с классом ajax, обрабатывать их будем
+	 * через axios, его необходимо декларировать выше, проверьте,
+	 * что установили его в ноде
+	 */
+	let ajaxforms = document.querySelectorAll( 'form.ajax' );
+	if ( ajaxforms ) {
+		ajaxforms.forEach( ajaxform => {
+			let button = ajaxform.querySelector( '[type=submit]' );
+			( <HTMLFormElement> ajaxform ).onsubmit = e => {
+				( <HTMLButtonElement> button ).disabled = true;
+				( <HTMLButtonElement> button ).innerText = 'В процессе';
+				let data = new FormData( ( <HTMLFormElement> ajaxform ) );
+				axios( {
+					url: ajax_url,
+					data: data,
+					method: 'post'
+				} ).then( response => {
+					( <HTMLButtonElement> button ).disabled = false;
+					if ( response.data ) {
+						( <HTMLButtonElement> button ).innerText = 'Отправлено';
+						( <HTMLFormElement> ajaxform ).reset();
+					} else {
+						( <HTMLButtonElement> button ).innerText = 'Ошибка';
+					}					
+				} ).catch( error => {
+					( <HTMLButtonElement> button ).disabled = false;
+					( <HTMLButtonElement> button ).innerText = 'Ошибка';
+					( <HTMLFormElement> ajaxform ).reset();
+				} );
+			};
+		} );
+	}
 	
 } )();
