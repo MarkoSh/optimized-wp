@@ -158,5 +158,22 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 			}
 		};
 	}
+
+	/*
+	 * Простенькое решение показа модала
+	 */
+	let modal_initiators = document.querySelectorAll( '.modal-init' );
+	if ( modal_initiators ) {
+		modal_initiators.forEach( modal_initiator => {
+			let hash = ( <HTMLElement> modal_initiator ).getAttribute( 'href' ) || ( <HTMLElement> modal_initiator ).getAttribute( 'data-modal' ) ;
+			( <HTMLElement> modal_initiator ).onclick = e => {
+				e.preventDefault();
+				let modal = document.querySelector( hash );
+				modal.classList.add( 'active' );
+				document.body.classList.add( 'is-modal' );
+				return true;
+			};
+		} );
+	}
 	
 } )();
