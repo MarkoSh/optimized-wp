@@ -165,10 +165,10 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	let modal_inits = dom.querySelectorAll( '.modal-init' );
 	if ( modal_inits ) {
 		modal_inits.forEach( modal_initiator => {
-			let hash = ( <HTMLElement> modal_initiator ).getAttribute( 'href' ) || ( <HTMLElement> modal_initiator ).getAttribute( 'data-modal' ) ;
+			let hash = ( <HTMLElement> modal_initiator ).getAttribute( 'href' ) || ( <HTMLElement> modal_initiator ).getAttribute( 'data-modal' ),
+				modal = dom.querySelector( hash );
 			( <HTMLElement> modal_initiator ).onclick = e => {
 				e.preventDefault();
-				let modal = dom.querySelector( hash );
 				modal.classList.add( 'active' );
 				dom.body.classList.add( 'is-modal' );
 				return true;
