@@ -61,4 +61,18 @@ input, textarea {
 	width: 100%;
 	padding: $gutter;
 	margin: 0 auto;
+	position: relative;
+}
+
+.norelative {
+	position: static;
+}
+
+.button {
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+	/*
+	 * Тут делайте свои улучшения для дефолтного стиля кнопки
+	 */
 }
