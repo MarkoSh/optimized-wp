@@ -57,8 +57,8 @@ class Tools {
 	}
 }
 
-declare let ajax_url;
-declare function axios( options ): Promise<any>;
+declare let ajax_url; // Так надо!
+declare function axios( options ): Promise<any>; // Тоже так надо )
 let tools = new Tools(); // Глобальный объект пусть будет, функции должны быть доступны везде
 
 ( () => {
@@ -132,7 +132,7 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 					}					
 				} ).catch( error => {
 					( <HTMLButtonElement> button ).disabled = false;
-					( <HTMLButtonElement> button ).innerText = 'Ошибка';
+					( <HTMLButtonElement> button ).innerText = 'Критическая ошибка';
 					( <HTMLFormElement> ajaxform ).reset();
 				} );
 			};
