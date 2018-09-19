@@ -7,15 +7,15 @@ var gulp          = require( "gulp" ),
 	rename        = require( "gulp-rename" ),
 	autoprefixer  = require( "gulp-autoprefixer" ),
 	notify        = require( "gulp-notify" ),
-	gcmq          = require( "gulp-group-css-media-queries" ),
+	gcmq          = require( "gulp-group-css-media-queries" ), // На любителя, мне не сильно пригодилось, но штука красит код
 	htmlmin		  = require( "gulp-htmlmin" );
 
 gulp.task( "scss", () => {
 	return gulp.src( "style.scss" )
 	.pipe( scss( { outputStyle: "expand" } ).on( "error", notify.onError() ) )
 	.pipe( rename( { suffix: ".min", prefix : "" }))
-	.pipe( autoprefixer( [ "last 15 versions" ] ) )
-	.pipe( cleancss( { level: { 1: { specialComments: 0 } } } ) ) // Opt., comment out when debugging
+	.pipe( autoprefixer( [ "last 15 versions" ] ).on( "error", notify.onError() ) )
+	.pipe( cleancss( { level: { 1: { specialComments: 0 } } } ).on( "error", notify.onError() ) ) // Opt., comment out when debugging
 	.pipe( gulp.dest( "." ) );
 } )
 
@@ -41,7 +41,7 @@ gulp.task( "js", () => {
 } )
 
 gulp.task( "watch", [ "scss", "js" ], () => {
-	gulp.watch( "**/*.scss", [ "scss"] );
+	gulp.watch( "**/*.scss", [ "scss" ] );
 	gulp.watch( "js/scripts.js", [ "js" ] );
 } );
 
