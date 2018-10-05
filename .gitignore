@@ -1,0 +1,9 @@
+node_modules
+
+*.min.*
+
+*.map
+
+.vscode
+
+scripts.js

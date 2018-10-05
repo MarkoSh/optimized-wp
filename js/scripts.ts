@@ -115,6 +115,7 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 		ajaxforms.forEach( ajaxform => {
 			let button = ajaxform.querySelector( '[type=submit]' );
 			( <HTMLFormElement> ajaxform ).onsubmit = e => {
+				e.preventDefault();
 				( <HTMLButtonElement> button ).disabled = true;
 				( <HTMLButtonElement> button ).innerText = 'В процессе';
 				let data = new FormData( ( <HTMLFormElement> ajaxform ) );
@@ -136,6 +137,7 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 					( <HTMLButtonElement> button ).innerText = 'Критическая ошибка';
 					( <HTMLFormElement> ajaxform ).reset();
 				} );
+				return true;
 			};
 		} );
 	}
