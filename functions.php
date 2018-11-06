@@ -19,3 +19,25 @@ function add_ajax_url() {
 }
 
 add_filter( 'show_admin_bar', '__return_false' ); // Убираем панелькеу из фронта для всего на свете, ненавижу ее во фронте
+
+if ( wp_doing_ajax() ) {
+
+	// Опишите экшены аякса здесь
+	add_action('wp_ajax_myaction', 'ajax_handler');
+	add_action('wp_ajax_nopriv_myaction', 'ajax_handler');
+
+}
+
+/*
+ *
+ * AJAX Обработчик
+ * 
+ */
+function ajax_handler() {
+	if ( isset( $_POST[ 'captcha' ] ) && $_POST[ 'captcha' ] > 120000 && $_POST[ 'captcha' ] <= 500000 ) {
+		// Если прошли проверку простой капчи
+		
+		wp_send_json_success()
+	}
+	wp_send_json_error();
+}
