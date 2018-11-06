@@ -59,6 +59,7 @@ class Tools {
 
 declare let ajax_url; // Так надо!
 declare function axios( options ): Promise<any>; // Тоже так надо )
+declare function Inputmask( mask: string ): void;
 let tools = new Tools(); // Глобальный объект пусть будет, функции должны быть доступны везде
 
 ( dom => {
@@ -177,5 +178,10 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 			};
 		} );
 	}
+
+	let phoneim = new Inputmask( "+7 (999) 999-99-99" );
+	phoneim.mask( 'input[name="phone"]' );
+	let emailim = new Inputmask( "email" );
+	emailim.mask( 'input[name="email"]' );
 	
 } )( document );

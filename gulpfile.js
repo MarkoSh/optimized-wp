@@ -2,6 +2,7 @@ let fs			  = require( "fs" ),
 	gulp          = require( "gulp" ),
 	gutil         = require( "gulp-util" ),
 	scss          = require( "gulp-sass" ),
+	typescript 	  = require( "gulp-tsc" ),
 	concat        = require( "gulp-concat" ),
 	uglify        = require( "gulp-uglify" ),
 	cleancss      = require( "gulp-clean-css" ),
@@ -19,6 +20,12 @@ gulp.task( "scss", () => {
 		.pipe( cleancss( { level: { 1: { specialComments: 0 } } } ).on( "error", notify.onError() ) ) // Opt., comment out when debugging
 		.pipe( gulp.dest( "." ) );
 } )
+
+gulp.task( "ts", () => {
+	return gulp.src( "js/scripts.ts" )
+		.pipe( typescript().on( "error", notify.onError() ) )
+		.pipe( gulp.dest( "js/" ) );
+} );
 
 gulp.task( "js", () => {
 	return gulp.src( [
@@ -41,8 +48,9 @@ gulp.task( "js", () => {
 		.pipe( gulp.dest( "." ) );
 } )
 
-gulp.task( "watch", [ "scss", "js" ], () => {
+gulp.task( "watch", [ "scss", "ts", "js" ], () => {
 	gulp.watch( "**/*.scss", [ "scss" ] );
+	gulp.watch( "js/scripts.ts", [ "ts" ] );
 	gulp.watch( "js/scripts.js", [ "js" ] );
 
 	fs.watchFile( "style.min.css", {
