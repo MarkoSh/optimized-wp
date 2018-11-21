@@ -37,7 +37,7 @@ function ajax_handler() {
 	if ( isset( $_POST[ 'captcha' ] ) && $_POST[ 'captcha' ] > 120000 && $_POST[ 'captcha' ] <= 500000 ) {
 		// Если прошли проверку простой капчи
 		
-		wp_send_json_success()
+		wp_send_json_success();
 	}
 	wp_send_json_error();
 }
