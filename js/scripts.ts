@@ -96,11 +96,11 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 				min = parseInt( qty.getAttribute( 'min' ) ) || 0;
 			
 			( <HTMLButtonElement> add ).onclick = e => {
-				val = val + 1 <= max ? val++ : max;
+				val = val + 1 <= max ? ++val : max;
 				( <HTMLInputElement> qty ).value = String( val );
 			};
 			( <HTMLButtonElement> sub ).onclick = e => {
-				val = val - 1 >= min ? val-- : min;
+				val = val - 1 >= min ? ++val : min;
 				( <HTMLInputElement> qty ).value = String( val );
 			};
 		} );
