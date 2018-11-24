@@ -4,6 +4,7 @@ class Tools {
 	 * getCookie( name ) - вернет в виде строки содержимое кукиса
 	 * setCookie( name, value, props ) - установит куку, props задавайте в виде объекта
 	 * deleteCookie( name ) - удалит куку
+	 * getParameterByName( name, url ) - получит параметр с именем name из ссылки url
 	*/
 
 	rand( min: number = 0, max: number = 1000 ): number {
