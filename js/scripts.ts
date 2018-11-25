@@ -74,7 +74,7 @@ declare function Inputmask( mask: string ): void;
 declare function PhotoSwipe( pswp: HTMLElement, PhotoSwipeUI_Default: any, items: Array<Object>, options: Object ): void;
 let tools = new Tools(); // Глобальный объект пусть будет, функции должны быть доступны везде
 
-( dom => {
+( ( dom, ls ) => {
 
 	/*
 	 * Перехватываем все хеш-ссылки и убираем с них клик, ниже уже назначаем новые хендлеры.
@@ -241,4 +241,4 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	let emailim = new Inputmask( "email" );
 	emailim.mask( 'input[name="email"]' );
 	
-} )( document );
+} )( document, localStorage );
