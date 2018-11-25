@@ -192,6 +192,20 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	}
 
 	/**
+	 * Оборачиваем все youtube ролики в div с нужным нам классом,
+	 * я деклаю это для формирования блока с соотношением 16:9
+	 */
+	let iframes = dom.querySelectorAll( 'iframe[src*=youtube]' );
+	if ( iframes.length > 0 ) {
+		iframes.forEach( iframe => {
+			let div_iframe = dom.createElement( 'div' );
+			div_iframe.classList.add( 'iframe' );
+			div_iframe.innerHTML = iframe.outerHTML;
+			iframe.outerHTML = div_iframe.outerHTML;
+		} );
+	}
+
+	/**
 	 * Woocomerce рендерит в футере элемент для галереи от photoswipe,
 	 * давайте положим его в переменную и будем использовать по необходимости
 	 */
