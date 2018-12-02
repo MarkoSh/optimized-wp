@@ -2,7 +2,10 @@
 
 add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
 
-add_theme_support( 'html5' );
+add_theme_support( 'html5', array(
+	'search-form',
+	'gallery'
+) );
 add_theme_support( 'woocommerce' );
 add_theme_support( 'title-tag' );
 add_theme_support( 'menus' );
