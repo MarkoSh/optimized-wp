@@ -126,6 +126,8 @@ a.burger {
 			top: calc( 50% + 8px );
 		}
 	}
+	// Используйте активирующий класс active, вместо :focus, иначе внутренние клики не будут срабатывать
+	// Приведено длоя примера
 	&:focus, &:hover {
 		background: black;
 		.line {
@@ -149,5 +151,43 @@ a.burger {
 				transform: rotate( -45deg );
 			}
 		}
+	}
+}
+
+#primary_menu_container {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	#primary_menu {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		text-align: center;
+		overflow: hidden;
+		height: 0;
+		transition: .2s;
+		background:black;
+		li {
+			display: inline-block;
+			a {
+				display: block;
+				padding-left: $gutter;
+				padding-right: $gutter;
+				text-decoration: none;
+				color: white;
+				&:before {
+					content: '';
+					display: inline-block;
+					vertical-align: middle;
+					height: 50px;
+				}
+			}
+		}
+	}
+	// Используйте активирующий класс active, вместо :focus, иначе внутренние клики не будут срабатывать
+	// Приведено длоя примера
+	a.burger:focus + #primary_menu {
+		height: 50px;
 	}
 }
