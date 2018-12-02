@@ -8,6 +8,14 @@ add_theme_support( 'title-tag' );
 add_theme_support( 'menus' );
 add_theme_support( 'wc-product-gallery-lightbox' );
 
+add_action( 'after_setup_theme', function() {
+	register_nav_menus( array(
+		'primary' 		=> 'Первичное',
+		'secondary'		=> 'Вторичное',
+		'tertiary'		=> 'Третичное'
+	) );
+} );
+
 add_action( 'wp_head', 'add_ajax_url' );
 function add_ajax_url() {
 	?>
