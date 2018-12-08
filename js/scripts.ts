@@ -233,11 +233,11 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 			 * !!! НЕ ИСПОЛЬЗУЙТЕ ЭТОТ КОД, ЕСЛИ ПЛАНИРУЕТЕ ОТЛОЖЕННУЮ ЗАГРУЗКУ И ЕСЛИ У ВАС МНОГО КАРТИНОК В ПОСТАХ !!!
 			 */
 			img.onload = () => {
-				items.push( {
+				items[ i ] = {
 					src: src,
 					w: img.width,
 					h: img.height
-				} );
+				};
 				link.onclick = e => {
 					e.preventDefault();
 					let gallery = new PhotoSwipe( ( <HTMLElement> pswp ), PhotoSwipeUI_Default, items, {
