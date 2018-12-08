@@ -69,9 +69,17 @@ input, textarea {
 }
 
 .button {
+	cursor: pointer;
 	display: inline-block;
 	vertical-align: middle;
 	text-align: center;
+	height: 50px;
+	&:before {
+		content: '';
+		display: inline-block;
+		vertical-align: middle;
+		height: 100%;
+	}
 	/*
 	 * Тут делайте свои улучшения для дефолтного стиля кнопки
 	 */
@@ -127,7 +135,7 @@ a.burger {
 		}
 	}
 	// Используйте активирующий класс active, вместо :focus, иначе внутренние клики не будут срабатывать
-	// Приведено длоя примера
+	// Приведено для примера
 	&:focus, &:hover {
 		background: black;
 		.line {
@@ -186,7 +194,7 @@ a.burger {
 		}
 	}
 	// Используйте активирующий класс active, вместо :focus, иначе внутренние клики не будут срабатывать
-	// Приведено длоя примера
+	// Приведено для примера
 	a.burger:focus + #primary_menu {
 		height: 50px;
 	}
