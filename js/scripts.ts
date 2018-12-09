@@ -250,9 +250,15 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 		} );
 	}
 
-	let phoneim = new Inputmask( "+7 (999) 999-99-99" );
-	phoneim.mask( 'input[name="phone"]' );
-	let emailim = new Inputmask( "email" );
-	emailim.mask( 'input[name="email"]' );
+	let ims = [ {
+		selector	: 'input[name="phone"]',
+		mask		: '+7 (999) 999-99-99'
+	}, {
+		selector	: 'input[name="email"]',
+		mask		: 'email'
+	} ];
+	ims.forEach( el => {
+		new Inputmask( el.mask ).mask( el.selector );
+	} );
 	
 } )( document, localStorage );

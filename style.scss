@@ -199,3 +199,16 @@ a.burger {
 		height: 50px;
 	}
 }
+
+body {
+	&.single {}
+	&.page {}
+}
+
+header#masthead {
+	
+}
+
+footer#colophon {
+
+}
