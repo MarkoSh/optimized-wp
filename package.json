@@ -11,6 +11,7 @@
   "devDependencies": {
     "@types/node": "^10.12.12",
     "gulp": "git://github.com/gulpjs/gulp.git#6d71a658c61edb3090221579d8f97dbe086ba2ed",
+    "gulp-cli": "^2.0.1",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-clean-css": "^3.9.2",
     "gulp-concat": "^2.6.1",
@@ -27,7 +28,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "gulp-cli": "^2.0.1",
     "inputmask": "^4.0.0",
     "inputmask.phone": "^1.0.4",
     "photoswipe": "^4.1.2",
