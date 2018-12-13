@@ -12,7 +12,7 @@ let fs			  = require( "fs" ),
 	gcmq          = require( "gulp-group-css-media-queries" ), // На любителя, мне не сильно пригодилось, но штука красит код
 	htmlmin		  = require( "gulp-htmlmin" ); // Рудимент, пусть будет на память.
 
-function styles() {
+let styles = () => {
 	return gulp.src( "style.scss" )
 		.pipe( scss( { outputStyle: "expand" } ).on( "error", notify.onError() ) )
 		.pipe( rename( { suffix: ".min", prefix : "" }))
@@ -21,13 +21,13 @@ function styles() {
 		.pipe( gulp.dest( "." ) );
 }
 
-function ts() {
+let ts = () => {
 	return gulp.src( "js/scripts.ts" )
 		.pipe( typescript().on( "error", notify.onError() ) )
 		.pipe( gulp.dest( "js" ) );
 }
 
-function js() {
+let js = () => {
 	return gulp.src( [
 			"node_modules/axios/dist/axios.min.js",
 
@@ -48,7 +48,7 @@ function js() {
 		.pipe( gulp.dest( "." ) );
 }
 
-function watchFiles() {
+let watchFiles = () => {
 	gulp.watch( "**/*.scss", styles );
 	gulp.watch( "js/scripts.ts", ts );
 	gulp.watch( "js/scripts.js", js );
