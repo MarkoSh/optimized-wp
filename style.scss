@@ -136,14 +136,10 @@ a.burger {
 	}
 	// Используйте активирующий класс active, вместо :focus, иначе внутренние клики не будут срабатывать
 	// Приведено для примера
-	&:focus, &:hover {
+	&:hover {
 		background: black;
 		.line {
 			background: white;
-		}
-	}
-	&:focus {
-		.line {
 			&:first-child,
 			&:last-child {
 				top: calc( 50% - 2px );
@@ -193,10 +189,12 @@ a.burger {
 			}
 		}
 	}
-	// Используйте активирующий класс active, вместо :focus, иначе внутренние клики не будут срабатывать
+	// Используйте активирующий класс active, вместо :hover, иначе внутренние клики не будут срабатывать
 	// Приведено для примера
-	a.burger:focus + #primary_menu {
-		height: 50px;
+	&:hover {
+		#primary_menu {
+			height: 50px;
+		}
 	}
 }
 
