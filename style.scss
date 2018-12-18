@@ -19,6 +19,7 @@
 
 html, body {
 	min-height: 100%;
+	height: 100%;
 }
 
 body {
@@ -199,14 +200,18 @@ a.burger {
 }
 
 body {
-	&.single {}
-	&.page {}
 }
 
+$headerhight: 100px;
 header#masthead {
-	
+	height: $headerhight;
+}
+
+$footerheight: 200px;
+#content {
+	min-height: calc( 100vh - #{ $headerhight + $footerheight } );
 }
 
 footer#colophon {
-
+	height: $footerheight;
 }
