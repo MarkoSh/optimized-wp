@@ -22,7 +22,7 @@ let styles = () => {
 }
 
 let ts = () => {
-	return gulp.src( "js/scripts.ts" )
+	return gulp.src( "ts/scripts.ts" )
 		.pipe( typescript().on( "error", notify.onError() ) )
 		.pipe( gulp.dest( "js" ) );
 }
@@ -50,7 +50,7 @@ let js = () => {
 
 let watchFiles = () => {
 	gulp.watch( "**/*.scss", styles );
-	gulp.watch( "js/scripts.ts", ts );
+	gulp.watch( "ts/scripts.ts", ts );
 	gulp.watch( "js/scripts.js", js );
 
 	fs.watchFile( "style.min.css", {

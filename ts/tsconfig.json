@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "module"    : "system",
+        "outFile"   : "../js/scripts.js"
+    },
+    "files": [
+        "scripts.ts"
+    ]
+}
