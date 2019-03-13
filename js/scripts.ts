@@ -74,7 +74,7 @@ declare function Inputmask( mask: string ): void;
 declare function PhotoSwipe( pswp: HTMLElement, PhotoSwipeUI_Default: any, items: Array<Object>, options: Object ): void;
 let tools = new Tools(); // Глобальный объект пусть будет, функции должны быть доступны везде
 
-( ( dom, ls ) => {
+( ( wnd, dom, body, ls ) => {
 
 	/*
 	 * Перехватываем все хеш-ссылки и убираем с них клик, ниже уже назначаем новые хендлеры.
@@ -82,8 +82,8 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	 */
 	let hashlinks = dom.querySelectorAll( 'a[href="#"]' );
 	if ( hashlinks ) {
-		hashlinks.forEach( ( hashlink, i, array ) => {
-			( <HTMLAnchorElement> hashlink ).onclick = e => {
+		hashlinks.forEach( ( hashlink: HTMLAnchorElement, i, array ) => {
+			hashlink.onclick = e => {
 				e.preventDefault();
 				return true;
 			};
@@ -100,20 +100,20 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	let quantities = dom.querySelectorAll( '.quantity' );
 	if ( quantities ) {
 		quantities.forEach( quantity => {
-			let add = quantity.querySelector( 'button.add' ),
-				sub = quantity.querySelector( 'button.sub' ),
-				qty = quantity.querySelector( 'input.qty' ),
-				val = parseInt( ( <HTMLInputElement> qty ).value ),
+			let add = <HTMLButtonElement> quantity.querySelector( 'button.add' ),
+				sub = <HTMLButtonElement> quantity.querySelector( 'button.sub' ),
+				qty = <HTMLInputElement> quantity.querySelector( 'input.qty' ),
+				val = parseInt( qty.value ),
 				max = parseInt( qty.getAttribute( 'max' ) ) || 999999,
 				min = parseInt( qty.getAttribute( 'min' ) ) || 0;
 			
-			( <HTMLButtonElement> add ).onclick = e => {
+			add.onclick = e => {
 				val = val + 1 <= max ? ++val : max;
-				( <HTMLInputElement> qty ).value = String( val );
+				qty.value = String( val );
 			};
-			( <HTMLButtonElement> sub ).onclick = e => {
+			sub.onclick = e => {
 				val = val - 1 >= min ? ++val : min;
-				( <HTMLInputElement> qty ).value = String( val );
+				qty.value = String( val );
 			};
 		} );
 	}
@@ -125,30 +125,41 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	 */
 	let ajaxforms = dom.querySelectorAll( 'form.ajax' );
 	if ( ajaxforms ) {
-		ajaxforms.forEach( ajaxform => {
-			let button = ajaxform.querySelector( '[type=submit]' );
-			( <HTMLFormElement> ajaxform ).onsubmit = e => {
+		ajaxforms.forEach( ( ajaxform: HTMLFormElement ) => {
+			let button = <HTMLButtonElement> ajaxform.querySelector( '[type=submit]' );
+			ajaxform.onsubmit = e => {
 				e.preventDefault();
-				( <HTMLButtonElement> button ).disabled = true;
-				( <HTMLButtonElement> button ).innerText = 'В процессе';
+				button.disabled = true;
+				button.innerText = 'В процессе';
 				let data = new FormData( ( <HTMLFormElement> ajaxform ) );
 				data.set( 'captcha', String( tools.rand( 120000, 500000 ) ) ); // Не забудьте сделать проверку поля captcha в беке, минимальная капча, убережет ваши нервы на первое время.
+				
+				/**
+				let xhr = new XMLHttpRequest();
+				xhr.open( 'POST', ajax_url );
+				xhr.onload = () => {
+
+				};
+				xhr.onerror = () => {};
+				xhr.send( data );
+				 */
+				 
 				axios( {
 					url: ajax_url,
 					data: data,
 					method: 'post'
 				} ).then( response => {
-					( <HTMLButtonElement> button ).disabled = false;
+					button.disabled = false;
 					if ( response.data ) {
-						( <HTMLButtonElement> button ).innerText = 'Отправлено';
-						( <HTMLFormElement> ajaxform ).reset();
+						button.innerText = 'Отправлено';
+						ajaxform.reset();
 					} else {
-						( <HTMLButtonElement> button ).innerText = 'Ошибка';
+						button.innerText = 'Ошибка';
 					}					
 				} ).catch( error => {
-					( <HTMLButtonElement> button ).disabled = false;
-					( <HTMLButtonElement> button ).innerText = 'Критическая ошибка';
-					( <HTMLFormElement> ajaxform ).reset();
+					button.disabled = false;
+					button.innerText = 'Критическая ошибка';
+					ajaxform.reset();
 				} );
 				return true;
 			};
@@ -179,10 +190,10 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	 */
 	let modal_inits = dom.querySelectorAll( '.modal-init' );
 	if ( modal_inits ) {
-		modal_inits.forEach( modal_initiator => {
-			let hash = ( <HTMLElement> modal_initiator ).getAttribute( 'href' ) || ( <HTMLElement> modal_initiator ).getAttribute( 'data-modal' ),
+		modal_inits.forEach( ( modal_initiator: HTMLElement ) => {
+			let hash = modal_initiator.getAttribute( 'href' ) || modal_initiator.getAttribute( 'data-modal' ),
 				modal = dom.querySelector( hash );
-			( <HTMLElement> modal_initiator ).onclick = e => {
+			modal_initiator.onclick = e => {
 				e.preventDefault();
 				modal.classList.add( 'active' );
 				dom.body.classList.add( 'is-modal' );
@@ -261,4 +272,4 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 		new Inputmask( el.mask ).mask( el.selector );
 	} );
 	
-} )( document, localStorage );
+} )( window, document, document.body, localStorage );
