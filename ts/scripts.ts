@@ -171,26 +171,12 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 		};
 	}
 
-	/*
-	 * Простенькое решение показа модала
-	 */
-	let modal_inits = dom.querySelectorAll( '.modal-init' );
-	if ( modal_inits ) {
-		modal_inits.forEach( ( modal_initiator: Element ) => {
-			let hash = String( modal_initiator.getAttribute( 'href' ) || modal_initiator.getAttribute( 'data-modal' ) ),
-				modal = <HTMLDivElement> dom.querySelector( hash );
-			( <HTMLElement> modal_initiator ).onclick = e => {
-				e.preventDefault();
-				modal.classList.add( 'active' );
-				body.classList.add( 'is-modal' );
-				return true;
-			};
-		} );
-	}
+	
+
 
 	/**
 	 * Оборачиваем все youtube ролики в div с нужным нам классом,
-	 * я деклаю это для формирования блока с соотношением 16:9
+	 * я делаю это для формирования блока с соотношением 16:9
 	 */
 	let iframes = dom.querySelectorAll( 'iframe[src*=youtube]' );
 	if ( iframes.length > 0 ) {
@@ -203,7 +189,7 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	}
 
 	/**
-	 * Woocomerce рендерит в футере элемент для галереи от photoswipe,
+	 * Woocommerce рендерит в футере элемент для галереи от photoswipe,
 	 * давайте положим его в переменную и будем использовать по необходимости
 	 */
 	let pswp = dom.querySelector( '.pswp' );
@@ -274,6 +260,18 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	wnd.onclick = e => {
 
 		let target = e.target;
+
+		/*
+		* Простенькое решение показа модала
+		*/
+		if ( ( <HTMLAnchorElement> target ).classList.contains( 'modal-init' ) ) {
+			let hash 	= ( <HTMLAnchorElement> target ).getAttribute( 'href' ),
+				modal 	= dom.querySelector( hash );
+			e.preventDefault();
+			modal.classList.add( 'active' );
+			body.classList.add( 'is-modal' );
+			return true;
+		}
 
 		if ( ( <HTMLFormElement> target ).type == 'reset' ) {
 			let form = ( <HTMLFormElement> target ).form;
