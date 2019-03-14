@@ -105,54 +105,6 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	}
 
 	/*
-	 * Подхватываем все формы с классом ajax, обрабатывать их будем
-	 * через axios, его необходимо декларировать выше, проверьте,
-	 * что установили его в ноде
-	 */
-	let ajaxforms = dom.querySelectorAll( 'form.ajax' );
-	if ( ajaxforms ) {
-		ajaxforms.forEach( ( ajaxform: Element ) => {
-			let button = <HTMLButtonElement> ajaxform.querySelector( '[type=submit]' );
-			( <HTMLFormElement> ajaxform ).onsubmit = e => {
-				e.preventDefault();
-				button.disabled = true;
-				button.innerText = 'В процессе';
-				let data = new FormData( ( <HTMLFormElement> ajaxform ) );
-				data.set( 'captcha', String( tools.rand( 120000, 500000 ) ) ); // Не забудьте сделать проверку поля captcha в беке, минимальная капча, убережет ваши нервы на первое время.
-				
-				/**
-				let xhr = new XMLHttpRequest();
-				xhr.open( 'POST', ajax_url );
-				xhr.onload = () => {
-
-				};
-				xhr.onerror = () => {};
-				xhr.send( data );
-				 */
-				 
-				axios( {
-					url: ajax_url,
-					data: data,
-					method: 'post'
-				} ).then( response => {
-					button.disabled = false;
-					if ( response.data ) {
-						button.innerText = 'Отправлено';
-						( <HTMLFormElement> ajaxform ).reset();
-					} else {
-						button.innerText = 'Ошибка';
-					}					
-				} ).catch( error => {
-					button.disabled = false;
-					button.innerText = 'Критическая ошибка';
-					( <HTMLFormElement> ajaxform ).reset();
-				} );
-				return true;
-			};
-		} );
-	}
-
-	/*
 	 * Хитрое решение клика в область вне нужного элемента,
 	 * например у самопального сайдбара выдвигающегося, либо модала,
 	 * по типу magnific-popup
@@ -170,9 +122,6 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 			}
 		};
 	}
-
-	
-
 
 	/**
 	 * Оборачиваем все youtube ролики в div с нужным нам классом,
@@ -245,9 +194,58 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 		im.mask( el.selector );
 	} );
 
+	wnd.onsubmit = e => {
+		let target = e.target;
+
+		if ( ( <HTMLFormElement> target ).classList.contains( 'ajax' ) ) {
+			e.preventDefault();
+			if ( target[ 'process' ] ) return true;
+			let submit = ( <HTMLFormElement> target ).querySelector( '[type=submit]' );
+			let text = 'В процессе...';
+			( <HTMLInputElement> submit ).value = text;
+			( <HTMLButtonElement> submit ).innerText = text;
+			target[ 'process' ] = true;
+			let data = new FormData( ( <HTMLFormElement> target ) );
+			data.set( 'captcha', String( tools.rand( 120000, 500000 ) ) ); // Не забудьте сделать проверку поля captcha в беке, минимальная капча, убережет ваши нервы на первое время.
+			let xhr = new XMLHttpRequest();
+			xhr.open( 'POST', ajax_url );
+			xhr.onreadystatechange = () => {
+				switch ( xhr.readyState ) {
+					case 0:
+						text = 'Начинаем...';
+					break;
+					case 1: 
+						text = 'Отправляем...';
+					break;
+					case 2:
+						text = 'Заголовки...';
+					break;
+					case 3:
+						text = 'Получаем...';
+					break;
+					case 4:
+						text = 'Получено';
+						target[ 'process' ] = false;
+					break;
+				}
+				if ( xhr.status >= 200 && xhr.status <= 300 ) text = 'Отправлено';
+				if ( xhr.status >= 400 ) text = 'Ошибка обработки';
+				if ( xhr.status >= 500 ) text = 'Ошибка сервера';
+
+				( <HTMLInputElement> submit ).value = text;
+				( <HTMLButtonElement> submit ).innerText = text;
+			}
+			xhr.send( data );
+		}
+		return true;
+	};
+
 	wnd.onchange = e => {
 		let target = e.target;
 
+		/**
+		 * Заменяем текст в лейблах привязанных к файловому инпуту на имя файла
+		 */
 		if ( ( <HTMLInputElement> target ).tagName == 'INPUT' && ( <HTMLInputElement> target ).files ) {
 			let labels = ( <HTMLInputElement> target ).labels;
 			labels.forEach( label => {
@@ -273,6 +271,9 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 			return true;
 		}
 
+		/**
+		 * При ресетинге формы так же сбрасываем лейблы, если у них указан дефолтный текст
+		 */
 		if ( ( <HTMLFormElement> target ).type == 'reset' ) {
 			let form = ( <HTMLFormElement> target ).form;
 			let labels = form.querySelectorAll( 'label' );
