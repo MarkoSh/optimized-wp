@@ -77,20 +77,6 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 ( ( wnd, dom, body, ls ) => {
 
 	/*
-	 * Перехватываем все хеш-ссылки и убираем с них клик, ниже уже назначаем новые хендлеры.
-	 * Сделано исключительно для удобства и для красоты.
-	 */
-	let hashlinks = dom.querySelectorAll( 'a[href="#"]' );
-	if ( hashlinks ) {
-		hashlinks.forEach( ( hashlink: Element, i: number, array: any ) => {
-			( <HTMLAnchorElement> hashlink ).onclick = e => {
-				e.preventDefault();
-				return true;
-			};
-		} );
-	}
-
-	/*
 	 * Подхватываем обработку поля Количество, при условии,
 	 * что доверстали к элементу две кнопки прибавления и вычитания.
 	 * !!! Внимание!!! Подхватываются только те, что уже существуют,
@@ -272,5 +258,38 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 		let im = new Inputmask( el.mask );
 		im.mask( el.selector );
 	} );
+
+	wnd.onchange = e => {
+		let target = e.target;
+
+		if ( ( <HTMLInputElement> target ).tagName == 'INPUT' && ( <HTMLInputElement> target ).files ) {
+			let labels = ( <HTMLInputElement> target ).labels;
+			labels.forEach( label => {
+				let filename = ( <HTMLInputElement> target ).files[ 0 ].name;
+				label.innerText = filename;
+			} );
+		}
+	};
+
+	wnd.onclick = e => {
+
+		let target = e.target;
+
+		if ( ( <HTMLFormElement> target ).type == 'reset' ) {
+			let form = ( <HTMLFormElement> target ).form;
+			let labels = form.querySelectorAll( 'label' );
+			labels.forEach( label => {
+				let default_text = label.getAttribute( 'data-default-text' );
+				if ( default_text ) label.innerText = default_text;
+			} );
+		}
+
+		// Перехватываем все хештеговые ссылки и отменяем на них клик
+		if ( ( <HTMLAnchorElement> target ).tagName == 'A' && ( <HTMLAnchorElement> target ).href.indexOf( '#' ) == 0 ) {
+			e.preventDefault();
+		}
+		
+		return true;
+	};
 	
 } )( window, document, document.body, localStorage );
