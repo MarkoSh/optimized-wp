@@ -174,8 +174,8 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 	let over = dom.getElementById( 'over' );
 	if ( over ) {
 		over.onclick = e => {
-			dom.body.classList.remove( 'is-modal' );
-			dom.body.classList.remove( 'is-side' );
+			body.classList.remove( 'is-modal' );
+			body.classList.remove( 'is-side' );
 			let actives = dom.querySelectorAll( '.active' );
 			if ( actives ) {
 				actives.forEach( active => {
@@ -196,7 +196,7 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 			( <HTMLElement> modal_initiator ).onclick = e => {
 				e.preventDefault();
 				modal.classList.add( 'active' );
-				dom.body.classList.add( 'is-modal' );
+				body.classList.add( 'is-modal' );
 				return true;
 			};
 		} );
