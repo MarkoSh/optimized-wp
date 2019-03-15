@@ -240,6 +240,21 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 		return true;
 	};
 
+	wnd.onreset = e => {
+
+		/**
+		 * При ресетинге формы так же сбрасываем лейблы, если у них указан дефолтный текст
+		 */
+
+		let target = <HTMLFormElement> e.target;
+
+		let labels = target.querySelectorAll( 'label' );
+		labels.forEach( label => {
+			let default_text = label.getAttribute( 'data-default-text' );
+			if ( default_text ) label.innerText = default_text;
+		} );
+	};
+
 	wnd.onchange = e => {
 		let target = e.target;
 
@@ -269,18 +284,6 @@ let tools = new Tools(); // Глобальный объект пусть буд�
 			modal.classList.add( 'active' );
 			body.classList.add( 'is-modal' );
 			return true;
-		}
-
-		/**
-		 * При ресетинге формы так же сбрасываем лейблы, если у них указан дефолтный текст
-		 */
-		if ( ( <HTMLFormElement> target ).type == 'reset' ) {
-			let form = ( <HTMLFormElement> target ).form;
-			let labels = form.querySelectorAll( 'label' );
-			labels.forEach( label => {
-				let default_text = label.getAttribute( 'data-default-text' );
-				if ( default_text ) label.innerText = default_text;
-			} );
 		}
 
 		// Перехватываем все хештеговые ссылки и отменяем на них клик
