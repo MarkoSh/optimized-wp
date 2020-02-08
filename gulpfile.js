@@ -1,73 +1,40 @@
-let fs			  = require( "fs" ),
-	gulp          = require( "gulp" ),
-	gutil         = require( "gulp-util" ),
-	scss          = require( "gulp-sass" ),
-	typescript 	  = require( "gulp-tsc" ),
-	concat        = require( "gulp-concat" ),
-	uglify        = require( "gulp-uglify" ),
-	cleancss      = require( "gulp-clean-css" ),
-	rename        = require( "gulp-rename" ),
-	autoprefixer  = require( "gulp-autoprefixer" ),
-	notify        = require( "gulp-notify" ),
-	gcmq          = require( "gulp-group-css-media-queries" ), // На любителя, мне не сильно пригодилось, но штука красит код
-	htmlmin		  = require( "gulp-htmlmin" ); // Рудимент, пусть будет на память.
+const {
+	parallel, 
+	src, 
+	dest
+} 				= require( 'gulp' );
+const gulp		= require( 'gulp' );
 
-let styles = () => {
-	return gulp.src( "style.scss" )
-		.pipe( scss( { outputStyle: "expand" } ).on( "error", notify.onError() ) )
-		.pipe( rename( { suffix: ".min", prefix : "" }))
-		.pipe( autoprefixer( [ "last 15 versions" ] ).on( "error", notify.onError() ) )
-		.pipe( cleancss( { level: { 1: { specialComments: 0 } } } ).on( "error", notify.onError() ) ) // Opt., comment out when debugging
-		.pipe( gulp.dest( "." ) );
+const babel 	= require( 'gulp-babel' );
+const uglify 	= require( 'gulp-uglify' );
+const rename 	= require( 'gulp-rename' );
+
+const sass		= require( 'gulp-sass' );
+const autoprefixer = require( 'gulp-autoprefixer' );
+const cleanCss	= require( 'gulp-clean-css' );
+
+function js() {
+	const js = () =>  src( 'ts/scripts.js' )
+		.pipe( babel() )
+		.pipe( uglify() )
+		.pipe( rename( {
+			suffix: '.min'
+		} ) )
+		.pipe( dest( '.' ) );
+	return gulp.watch( 'ts/scripts.js', js );
 }
 
-let ts = () => {
-	return gulp.src( "ts/scripts.ts" )
-		.pipe( typescript().on( "error", notify.onError() ) )
-		.pipe( gulp.dest( "js" ) );
+
+function css() {
+	const css = () => src( 'styles.scss' )
+		.pipe( sass() )
+		.pipe( autoprefixer() )
+		.pipe( cleanCss( { compatibility: 'ie8' } ) )
+		.pipe( rename( {
+			suffix: '.min'
+		} ) )
+		.pipe( dest( '.' ) );
+	return gulp.watch( 'styles.scss', css );
 }
 
-let js = () => {
-	return gulp.src( [
-			"node_modules/axios/dist/axios.min.js",
-
-			"node_modules/inputmask/dist/min/inputmask/dependencyLibs/inputmask.dependencyLib.min.js",
-			"node_modules/inputmask/dist/min/inputmask/inputmask.min.js",
-			"node_modules/inputmask/dist/min/inputmask/inputmask.extensions.min.js",
-			"node_modules/inputmask.phone/dist/min/inputmask.phone/inputmask.phone.extensions.min.js",
-
-			"node_modules/photoswipe/dist/photoswipe.min.js",
-			"node_modules/photoswipe/dist/photoswipe-ui-default.min.js",
-
-			"node_modules/swiper/dist/js/swiper.min.js",
-
-			"js/scripts.js", // Always at the end
-		] )
-		.pipe( concat( "scripts.min.js" ) )
-		.pipe( uglify().on( "error", notify.onError() ) ) // Mifify js (opt.) - mifify hahaha
-		.pipe( gulp.dest( "." ) );
-}
-
-let watchFiles = () => {
-	gulp.watch( "**/*.scss", styles );
-	gulp.watch( "ts/scripts.ts", ts );
-	gulp.watch( "js/scripts.js", js );
-
-	fs.watchFile( "style.min.css", {
-		interval: 100
-	}, ( current, previous ) => {
-		if ( current.size == 0 ) {
-			gulp.parallel( styles );
-		}
-	} );
-
-	fs.watchFile( "scripts.min.js", {
-		interval: 100
-	}, ( current, previous ) => {
-		if ( current.size == 0 ) {
-			gulp.parallel( js );
-		}
-	} );
-}
-
-gulp.task( "watch", gulp.parallel( watchFiles ) );
+exports.default = parallel( js, css );

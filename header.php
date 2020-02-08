@@ -39,18 +39,6 @@
 
 	<body <?php body_class(); ?>>
 		<div id="page" class="hfeed site">
-			<header id="masthead" class="site-header" role="banner">
-				<?php
-					wp_nav_menu( array(
-						'theme_location'  => 'primary', // Используйте мнемонические названия меню - primary, secondary, tertiary, etc.
-						'container'       => 'nav', // Рекомендую использовать nav тэг, так как все таки это навигация по сайту
-						'container_class' => 'primary-menu-container', 
-						'container_id'    => 'primary_menu_container',
-						'menu_class'      => 'primary-menu', 
-						'menu_id'         => 'primary_menu',
-						'items_wrap'      => '<a href="#" class="burger"><div class="line bun"></div><div class="line beef"></div><div class="line bun"></div></a><ul id="%1$s" class="%2$s">%3$s</ul>',
-					) );
-				?>
-			</header><!-- .site-header -->
+			<header id="masthead" class="site-header" role="banner"></header><!-- .site-header -->
 			<div id="main" class="wrapper">
 

@@ -2,16 +2,16 @@
 
 	<div id="primary" class="content-area">
 		<div id="content" class="site-content" role="main">
-            <?php
-                if ( have_posts() ) {
-                    while( have_posts() ) {
-                        the_post();
-                        get_template_part( 'content', 'single' );
-                    }
-                } else {
-                    get_template_part( 'content', 'none' );
-                }
-            ?>
+			<?php
+				if ( have_posts() ) {
+					while( have_posts() ) {
+						the_post();
+						get_template_part( 'content', 'single' );
+					}
+				} else {
+					get_template_part( 'content', 'none' );
+				}
+			?>
 		</div><!-- #content -->
 	</div><!-- #primary -->
 
