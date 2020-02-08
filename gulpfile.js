@@ -26,7 +26,7 @@ function js() {
 
 
 function css() {
-	const css = () => src( 'styles.scss' )
+	const css = () => src( 'style.scss' )
 		.pipe( sass() )
 		.pipe( autoprefixer() )
 		.pipe( cleanCss( { compatibility: 'ie8' } ) )
@@ -34,7 +34,7 @@ function css() {
 			suffix: '.min'
 		} ) )
 		.pipe( dest( '.' ) );
-	return gulp.watch( 'styles.scss', css );
+	return gulp.watch( 'style.scss', css );
 }
 
 exports.default = parallel( js, css );
