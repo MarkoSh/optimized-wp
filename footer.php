@@ -8,6 +8,8 @@
 		}
 	?>
 
+	<?php // wp_footer(); // Мне не пригодилась ?>
+
 	<script src="<?php echo get_template_directory_uri(); ?>/scripts.min.js"></script>
 
 	</body>
