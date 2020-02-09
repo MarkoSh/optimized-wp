@@ -3,18 +3,24 @@ const {
 	src, 
 	dest,
 	watch
-} 				= require( 'gulp' );
+} 					= require( 'gulp' );
 
-const babel 	= require( 'gulp-babel' );
-const uglify 	= require( 'gulp-uglify' );
-const rename 	= require( 'gulp-rename' );
+const babel 		= require( 'gulp-babel' );
+const uglify 		= require( 'gulp-uglify' );
+const concat 		= require( 'gulp-concat' );
+const rename 		= require( 'gulp-rename' );
 
-const sass		= require( 'gulp-sass' );
-const autoprefixer = require( 'gulp-autoprefixer' );
-const cleanCss	= require( 'gulp-clean-css' );
+const sass			= require( 'gulp-sass' );
+const autoprefixer 	= require( 'gulp-autoprefixer' );
+const cleanCss		= require( 'gulp-clean-css' );
 
 function js() {
-	const js = () =>  src( 'ts/scripts.js' )
+	const js = () =>  src( [
+		'node_modules/photoswipe/dist/photoswipe.min.js',
+		'node_modules/swiper/js/swiper.min.js',
+		'ts/scripts.js'
+	] )
+		.pipe( concat( 'scripts.js' ) )
 		.pipe( babel() )
 		.pipe( uglify() )
 		.pipe( rename( {
@@ -33,7 +39,10 @@ function css() {
 			suffix: '.min'
 		} ) )
 		.pipe( dest( '.' ) );
-	return watch( 'style.scss', css );
+	return watch( [
+		'scss/**',
+		'style.scss'
+	], css );
 }
 
 exports.default = parallel( js, css );
