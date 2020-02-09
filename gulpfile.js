@@ -1,9 +1,9 @@
 const {
 	parallel, 
 	src, 
-	dest
+	dest,
+	watch
 } 				= require( 'gulp' );
-const gulp		= require( 'gulp' );
 
 const babel 	= require( 'gulp-babel' );
 const uglify 	= require( 'gulp-uglify' );
@@ -21,9 +21,8 @@ function js() {
 			suffix: '.min'
 		} ) )
 		.pipe( dest( '.' ) );
-	return gulp.watch( 'ts/scripts.js', js );
+	return watch( 'ts/scripts.js', js );
 }
-
 
 function css() {
 	const css = () => src( 'style.scss' )
@@ -34,7 +33,7 @@ function css() {
 			suffix: '.min'
 		} ) )
 		.pipe( dest( '.' ) );
-	return gulp.watch( 'style.scss', css );
+	return watch( 'style.scss', css );
 }
 
 exports.default = parallel( js, css );
