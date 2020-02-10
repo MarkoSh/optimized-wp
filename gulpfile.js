@@ -16,6 +16,7 @@ const cleanCss		= require( 'gulp-clean-css' );
 
 function js() {
 	const js = () =>  src( [
+			'node_modules/axios/dist/axios.min.js',
 			'node_modules/photoswipe/dist/photoswipe.min.js',
 			'node_modules/swiper/js/swiper.min.js',
 			'ts/scripts.js'
