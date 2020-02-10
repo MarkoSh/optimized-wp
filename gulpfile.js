@@ -16,10 +16,10 @@ const cleanCss		= require( 'gulp-clean-css' );
 
 function js() {
 	const js = () =>  src( [
-		'node_modules/photoswipe/dist/photoswipe.min.js',
-		'node_modules/swiper/js/swiper.min.js',
-		'ts/scripts.js'
-	] )
+			'node_modules/photoswipe/dist/photoswipe.min.js',
+			'node_modules/swiper/js/swiper.min.js',
+			'ts/scripts.js'
+		] )
 		.pipe( concat( 'scripts.js' ) )
 		.pipe( babel() )
 		.pipe( uglify() )
@@ -31,7 +31,11 @@ function js() {
 }
 
 function css() {
-	const css = () => src( 'style.scss' )
+	const css = () => src( [
+			'style.css',
+			'style.scss'
+		] )
+		.pipe( concat( 'style.css' ) )
 		.pipe( sass() )
 		.pipe( autoprefixer() )
 		.pipe( cleanCss( { compatibility: 'ie8' } ) )
