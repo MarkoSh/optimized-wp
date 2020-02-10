@@ -3,8 +3,8 @@
 // Выпиливаем шлакоблоки
 
 // REMOVE EMOJI ICONS
-remove_action('wp_head', 'print_emoji_detection_script', 7);
-remove_action('wp_print_styles', 'print_emoji_styles');
+remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+remove_action( 'wp_print_styles', 'print_emoji_styles' );
 
 function remove_styles() { 
 	wp_dequeue_style( 'wp-block-library' );
@@ -18,7 +18,6 @@ function remove_styles() {
 	wp_dequeue_style( 'woocommerce-inline' );
 }
 add_action( 'wp_enqueue_scripts', 'remove_styles', 100 );
-
 
 add_action( 'wp_loaded', function() {
 	remove_action( 'wp_head', 'wc_gallery_noscript' );
