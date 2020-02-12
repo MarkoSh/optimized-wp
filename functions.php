@@ -97,27 +97,6 @@ function product_variation_metabox( $meta_boxes ) {
 	$prefix = '';
 
 	$meta_boxes[] = array(
-		'id' => 'product_data_1c',
-		'title' => esc_html__( 'Данные 1c', 'metabox-online-generator' ),
-		'post_types' => array( 'product', 'product_variation' ),
-		'context' => 'advanced',
-		'priority' => 'default',
-		'autosave' => 'true',
-		'fields' => array(
-			array(
-				'id' => $prefix . '_1c_catalog_id',
-				'type' => 'text',
-				'name' => esc_html__( 'Идентификатор каталога', 'metabox-online-generator' ),
-			),
-			array(
-				'id' => $prefix . '_1c_product_id',
-				'type' => 'text',
-				'name' => esc_html__( 'Идентификатор товара', 'metabox-online-generator' ),
-			)
-		),
-	);
-
-	$meta_boxes[] = array(
 		'id' => 'product_data',
 		'title' => esc_html__( 'Данные товара', 'metabox-online-generator' ),
 		'post_types' => array( 'product_variation' ),
@@ -125,6 +104,14 @@ function product_variation_metabox( $meta_boxes ) {
 		'priority' => 'default',
 		'autosave' => 'true',
 		'fields' => array(
+			array(
+				'id' => $prefix . 'parent',
+				'type' => 'post',
+				'name' => esc_html__( 'Родительский товар', 'metabox-online-generator' ),
+				'post_type' => 'product',
+				'field_type' => 'select',
+				'parent' => 'true',
+			),
 			array(
 				'id' => $prefix . '_regular_price',
 				'type' => 'text',
@@ -159,6 +146,27 @@ function product_variation_metabox( $meta_boxes ) {
 				'id' => $prefix . '_height',
 				'type' => 'text',
 				'name' => esc_html__( 'Высота', 'metabox-online-generator' ),
+			)
+		),
+	);
+
+	$meta_boxes[] = array(
+		'id' => 'product_data_1c',
+		'title' => esc_html__( 'Данные 1c', 'metabox-online-generator' ),
+		'post_types' => array( 'product', 'product_variation' ),
+		'context' => 'advanced',
+		'priority' => 'default',
+		'autosave' => 'true',
+		'fields' => array(
+			array(
+				'id' => $prefix . '_1c_catalog_id',
+				'type' => 'text',
+				'name' => esc_html__( 'Идентификатор каталога', 'metabox-online-generator' ),
+			),
+			array(
+				'id' => $prefix . '_1c_product_id',
+				'type' => 'text',
+				'name' => esc_html__( 'Идентификатор товара', 'metabox-online-generator' ),
 			)
 		),
 	);
