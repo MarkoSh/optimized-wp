@@ -175,4 +175,117 @@ function product_variation_metabox( $meta_boxes ) {
 }
 add_filter( 'rwmb_meta_boxes', 'product_variation_metabox' );
 
+add_action( 'woocommerce_variation_options_pricing', function ( $loop, $variation_data, $variation ) {
+	$variation_object = wc_get_product( $variation->ID );
+	
+	$variable_currency_price = get_post_meta( $variation->ID, 'variable_currency_price', true );
+
+	woocommerce_wp_text_input(
+		array(
+			'id'            => "variable_currency_price_{$loop}",
+			'name'          => "variable_currency_price[{$loop}]",
+			'value'         => $variable_currency_price[ 'variable_currency_price' ],
+			'data_type'     => 'price',
+			'label'         => esc_html__( 'Цена в валюте', 'woocommerce' ),
+			'wrapper_class' => 'form-row form-row-first',
+		)
+	);
+
+	woocommerce_wp_select(
+		array(
+			'id'            => "variable_currency_symbol_{$loop}",
+			'name'          => "variable_currency_symbol[{$loop}]",
+			'value'         => $variable_currency_price[ 'variable_currency_symbol' ],
+			'label'         => __( 'Символ валюты', 'woocommerce' ),
+			'options'       => array(
+				'usd'	=> 'USD',
+				'eur'	=> 'EUR'
+			),
+			'desc_tip'      => true,
+			'wrapper_class' => 'form-row form-row-last',
+		)
+	);
+}, 10, 3 );
+
+add_action( 'woocommerce_save_product_variation', function ( $variation_id, $i ) {
+
+	update_post_meta( $variation_id, 'variable_currency_price', array(
+		'variable_currency_price' 	=> isset( $_POST['variable_currency_price'][ $i ] ) ? wc_clean( wp_unslash( $_POST['variable_currency_price'][ $i ] ) ) : null,
+		'variable_currency_symbol'	=> isset( $_POST['variable_currency_symbol'][ $i ] ) ? wc_clean( wp_unslash( $_POST['variable_currency_symbol'][ $i ] ) ) : null
+	) );
+
+	return $variation_id;
+
+}, 10, 2 );
+
+add_action( 'woocommerce_product_options_pricing', function () {
+	if ( isset( $_GET[ 'post' ] ) ) {
+		$product_object = wc_get_product( $_GET[ 'post' ] );
+
+		$product_currency_data = get_post_meta( $product_object->get_id(), 'product_currency_price', true );
+	
+		$product_currency_price 	= $product_currency_data && array_key_exists( 'product_currency_price', $product_currency_data ) ? $product_currency_data[ 'product_currency_price' ] : null;
+		$product_currency_symbol 	= $product_currency_data && array_key_exists( 'product_currency_symbol', $product_currency_data ) ? $product_currency_data[ 'product_currency_symbol' ] : null;
+
+		woocommerce_wp_text_input(
+			array(
+				'id'        => 'product_currency_price',
+				'name'      => "product_currency_price",
+				'value'     => $product_currency_price,
+				'label'     => __( 'Цена в валюте', 'woocommerce' ),
+				'data_type' => 'price',
+			)
+		);
+		woocommerce_wp_select(
+			array(
+				'id'            => "product_currency_symbol",
+				'name'          => "product_currency_symbol",
+				'value'         => $product_currency_symbol,
+				'label'         => __( 'Символ валюты', 'woocommerce' ),
+				'options'       => array(
+					'usd'	=> 'USD',
+					'eur'	=> 'EUR'
+				),
+				'desc_tip'      => true,
+			)
+		);
+	} else {
+		woocommerce_wp_text_input(
+			array(
+				'id'        => 'product_currency_price',
+				'name'      => "product_currency_price",
+				'label'     => __( 'Цена в валюте', 'woocommerce' ),
+				'data_type' => 'price',
+			)
+		);
+		woocommerce_wp_select(
+			array(
+				'id'            => "product_currency_symbol",
+				'name'          => "product_currency_symbol",
+				'label'         => __( 'Символ валюты', 'woocommerce' ),
+				'options'       => array(
+					'usd'	=> 'USD',
+					'eur'	=> 'EUR'
+				),
+				'desc_tip'      => true,
+			)
+		);
+	}
+	
+}, 10 );
+
+add_action( 'woocommerce_process_product_meta_simple', '__save_product', 10, 1 );
+add_action( 'woocommerce_process_product_meta_external', '__save_product', 10, 1 );
+function __save_product( $product_id ) {
+
+	update_post_meta( $product_id, 'product_currency_price', array(
+		'product_currency_price' 	=> isset( $_POST['product_currency_price'] ) ? wc_clean( wp_unslash( $_POST['product_currency_price'] ) ) : null,
+		'product_currency_symbol'	=> isset( $_POST['product_currency_symbol'] ) ? wc_clean( wp_unslash( $_POST['product_currency_symbol'] ) ) : null
+	) );
+
+	return $product_id;
+
+}
+
+
 ?>
