@@ -178,13 +178,16 @@ add_filter( 'rwmb_meta_boxes', 'product_variation_metabox' );
 add_action( 'woocommerce_variation_options_pricing', function ( $loop, $variation_data, $variation ) {
 	$variation_object = wc_get_product( $variation->ID );
 	
-	$variable_currency_price = get_post_meta( $variation->ID, 'variable_currency_price', true );
+	$variable_currency_data = get_post_meta( $variation->ID, 'variable_currency_price', true );
+
+	$variable_currency_price 	= $variable_currency_data && array_key_exists( 'variable_currency_price', $variable_currency_data ) ? $variable_currency_data[ 'variable_currency_price' ] : null;
+	$variable_currency_symbol 	= $variable_currency_data && array_key_exists( 'variable_currency_symbol', $variable_currency_data ) ? $variable_currency_data[ 'variable_currency_symbol' ] : null;
 
 	woocommerce_wp_text_input(
 		array(
 			'id'            => "variable_currency_price_{$loop}",
 			'name'          => "variable_currency_price[{$loop}]",
-			'value'         => $variable_currency_price[ 'variable_currency_price' ],
+			'value'         => $variable_currency_price,
 			'data_type'     => 'price',
 			'label'         => esc_html__( 'Цена в валюте', 'woocommerce' ),
 			'wrapper_class' => 'form-row form-row-first',
@@ -195,7 +198,7 @@ add_action( 'woocommerce_variation_options_pricing', function ( $loop, $variatio
 		array(
 			'id'            => "variable_currency_symbol_{$loop}",
 			'name'          => "variable_currency_symbol[{$loop}]",
-			'value'         => $variable_currency_price[ 'variable_currency_symbol' ],
+			'value'         => $variable_currency_symbol,
 			'label'         => __( 'Символ валюты', 'woocommerce' ),
 			'options'       => array(
 				'usd'	=> 'USD',
