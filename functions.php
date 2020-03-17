@@ -98,7 +98,7 @@ function product_variation_metabox( $meta_boxes ) {
 
 	$meta_boxes[] = array(
 		'id' => 'product_data',
-		'title' => esc_html__( 'Данные товара', 'metabox-online-generator' ),
+		'title' => esc_html__( 'Данные товара', 'woocommerce' ),
 		'post_types' => array( 'product_variation' ),
 		'context' => 'advanced',
 		'priority' => 'default',
@@ -107,7 +107,7 @@ function product_variation_metabox( $meta_boxes ) {
 			array(
 				'id' => $prefix . 'parent',
 				'type' => 'post',
-				'name' => esc_html__( 'Родительский товар', 'metabox-online-generator' ),
+				'name' => esc_html__( 'Родительский товар', 'woocommerce' ),
 				'post_type' => 'product',
 				'field_type' => 'select',
 				'parent' => 'true',
@@ -115,44 +115,58 @@ function product_variation_metabox( $meta_boxes ) {
 			array(
 				'id' => $prefix . '_regular_price',
 				'type' => 'text',
-				'name' => esc_html__( 'Цена', 'metabox-online-generator' ),
+				'name' => esc_html__( 'Цена', 'woocommerce' ),
 			),
 			array(
 				'id' => $prefix . '_sale_price',
 				'type' => 'text',
-				'name' => esc_html__( 'Цена распродажи', 'metabox-online-generator' ),
+				'name' => esc_html__( 'Цена распродажи', 'woocommerce' ),
+			),
+			array(
+				'id' => $prefix . 'variable_currency_price',
+				'type' => 'text',
+				'name' => esc_html__( 'Цена в валюте', 'woocommerce' ),
+			),
+			array(
+				'id' => $prefix . 'variable_currency_symbol',
+				'type' => 'select',
+				'name' => esc_html__( 'Символ валюты', 'woocommerce' ),
+				'options'	=> array(
+					'usd'	=> 'USD',
+					'eur'	=> 'EUR'
+				)
 			),
 			array(
 				'id' => $prefix . '_sku',
 				'type' => 'text',
-				'name' => esc_html__( 'Артикул', 'metabox-online-generator' ),
+				'name' => esc_html__( 'Артикул', 'woocommerce' ),
 			),
 			array(
 				'id' => $prefix . '_weight',
 				'type' => 'text',
-				'name' => esc_html__( 'Вес', 'metabox-online-generator' ),
+				'name' => esc_html__( 'Вес', 'woocommerce' ),
 			),
 			array(
 				'id' => $prefix . '_length',
 				'type' => 'text',
-				'name' => esc_html__( 'Длина', 'metabox-online-generator' ),
+				'name' => esc_html__( 'Длина', 'woocommerce' ),
 			),
 			array(
 				'id' => $prefix . '_width',
 				'type' => 'text',
-				'name' => esc_html__( 'Ширина', 'metabox-online-generator' ),
+				'name' => esc_html__( 'Ширина', 'woocommerce' ),
 			),
 			array(
 				'id' => $prefix . '_height',
 				'type' => 'text',
-				'name' => esc_html__( 'Высота', 'metabox-online-generator' ),
+				'name' => esc_html__( 'Высота', 'woocommerce' ),
 			)
 		),
 	);
 
 	$meta_boxes[] = array(
 		'id' => 'product_data_1c',
-		'title' => esc_html__( 'Данные 1c', 'metabox-online-generator' ),
+		'title' => esc_html__( 'Данные 1c', 'woocommerce' ),
 		'post_types' => array( 'product', 'product_variation' ),
 		'context' => 'advanced',
 		'priority' => 'default',
@@ -161,12 +175,12 @@ function product_variation_metabox( $meta_boxes ) {
 			array(
 				'id' => $prefix . '_1c_catalog_id',
 				'type' => 'text',
-				'name' => esc_html__( 'Идентификатор каталога', 'metabox-online-generator' ),
+				'name' => esc_html__( 'Идентификатор каталога', 'woocommerce' ),
 			),
 			array(
 				'id' => $prefix . '_1c_product_id',
 				'type' => 'text',
-				'name' => esc_html__( 'Идентификатор товара', 'metabox-online-generator' ),
+				'name' => esc_html__( 'Идентификатор товара', 'woocommerce' ),
 			)
 		),
 	);
@@ -178,10 +192,8 @@ add_filter( 'rwmb_meta_boxes', 'product_variation_metabox' );
 add_action( 'woocommerce_variation_options_pricing', function ( $loop, $variation_data, $variation ) {
 	$variation_object = wc_get_product( $variation->ID );
 	
-	$variable_currency_data = get_post_meta( $variation->ID, 'variable_currency_price', true );
-
-	$variable_currency_price 	= $variable_currency_data && array_key_exists( 'variable_currency_price', $variable_currency_data ) ? $variable_currency_data[ 'variable_currency_price' ] : null;
-	$variable_currency_symbol 	= $variable_currency_data && array_key_exists( 'variable_currency_symbol', $variable_currency_data ) ? $variable_currency_data[ 'variable_currency_symbol' ] : null;
+	$variable_currency_price = get_post_meta( $variation->ID, 'variable_currency_price', true );
+	$variable_currency_symbol = get_post_meta( $variation->ID, 'variable_currency_symbol', true );
 
 	woocommerce_wp_text_input(
 		array(
@@ -212,10 +224,8 @@ add_action( 'woocommerce_variation_options_pricing', function ( $loop, $variatio
 
 add_action( 'woocommerce_save_product_variation', function ( $variation_id, $i ) {
 
-	update_post_meta( $variation_id, 'variable_currency_price', array(
-		'variable_currency_price' 	=> isset( $_POST['variable_currency_price'][ $i ] ) ? wc_clean( wp_unslash( $_POST['variable_currency_price'][ $i ] ) ) : null,
-		'variable_currency_symbol'	=> isset( $_POST['variable_currency_symbol'][ $i ] ) ? wc_clean( wp_unslash( $_POST['variable_currency_symbol'][ $i ] ) ) : null
-	) );
+	update_post_meta( $variation_id, 'variable_currency_price', isset( $_POST['variable_currency_price'][ $i ] ) ? wc_clean( wp_unslash( $_POST['variable_currency_price'][ $i ] ) ) : null );
+	update_post_meta( $variation_id, 'variable_currency_symbol', isset( $_POST['variable_currency_symbol'][ $i ] ) ? wc_clean( wp_unslash( $_POST['variable_currency_symbol'][ $i ] ) ) : null );
 
 	return $variation_id;
 
@@ -225,11 +235,9 @@ add_action( 'woocommerce_product_options_pricing', function () {
 	if ( isset( $_GET[ 'post' ] ) ) {
 		$product_object = wc_get_product( $_GET[ 'post' ] );
 
-		$product_currency_data = get_post_meta( $product_object->get_id(), 'product_currency_price', true );
+		$product_currency_price = get_post_meta( $product_object->get_id(), 'product_currency_price', true );
+		$product_currency_symbol = get_post_meta( $product_object->get_id(), 'product_currency_symbol', true );
 	
-		$product_currency_price 	= $product_currency_data && array_key_exists( 'product_currency_price', $product_currency_data ) ? $product_currency_data[ 'product_currency_price' ] : null;
-		$product_currency_symbol 	= $product_currency_data && array_key_exists( 'product_currency_symbol', $product_currency_data ) ? $product_currency_data[ 'product_currency_symbol' ] : null;
-
 		woocommerce_wp_text_input(
 			array(
 				'id'        => 'product_currency_price',
@@ -281,10 +289,8 @@ add_action( 'woocommerce_process_product_meta_simple', '__save_product', 10, 1 )
 add_action( 'woocommerce_process_product_meta_external', '__save_product', 10, 1 );
 function __save_product( $product_id ) {
 
-	update_post_meta( $product_id, 'product_currency_price', array(
-		'product_currency_price' 	=> isset( $_POST['product_currency_price'] ) ? wc_clean( wp_unslash( $_POST['product_currency_price'] ) ) : null,
-		'product_currency_symbol'	=> isset( $_POST['product_currency_symbol'] ) ? wc_clean( wp_unslash( $_POST['product_currency_symbol'] ) ) : null
-	) );
+	update_post_meta( $product_id, 'product_currency_price', isset( $_POST['product_currency_price'][ $i ] ) ? wc_clean( wp_unslash( $_POST['product_currency_price'][ $i ] ) ) : null );
+	update_post_meta( $product_id, 'product_currency_symbol', isset( $_POST['product_currency_symbol'][ $i ] ) ? wc_clean( wp_unslash( $_POST['product_currency_symbol'][ $i ] ) ) : null );
 
 	return $product_id;
 
